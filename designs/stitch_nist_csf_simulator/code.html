@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PwC Maturity Dashboard - NIST CSF 2.0</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffdbce",
+                        "surface-container-highest": "#e4e2e2",
+                        "on-primary-fixed-variant": "#920400",
+                        "outline-variant": "#e6bdb7",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "inverse-primary": "#ffb4a7",
+                        "surface-bright": "#fbf9f8",
+                        "primary-fixed-dim": "#ffb4a7",
+                        "surface": "#fbf9f8",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#5b1b00",
+                        "on-background": "#1b1c1c",
+                        "surface-container-low": "#f5f3f3",
+                        "secondary": "#a83a00",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ffdeaa",
+                        "on-secondary-fixed": "#370d00",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#f2f0f0",
+                        "primary": "#bb1004",
+                        "tertiary-fixed-dim": "#ffba2c",
+                        "surface-variant": "#e4e2e2",
+                        "on-tertiary-fixed": "#271900",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#5c403b",
+                        "surface-dim": "#dbd9d9",
+                        "on-tertiary-container": "#ffffff",
+                        "background": "#fbf9f8",
+                        "inverse-surface": "#303030",
+                        "primary-container": "#e0301e",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#916f69",
+                        "on-primary-container": "#ffffff",
+                        "surface-tint": "#bd1205",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#ffdad4",
+                        "on-primary-fixed": "#410100",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "secondary-container": "#fe6a29",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#efeded",
+                        "on-surface": "#1b1c1c",
+                        "surface-container-high": "#eae8e7",
+                        "on-error": "#ffffff",
+                        "tertiary": "#7c5700",
+                        "tertiary-container": "#9c6e00",
+                        "on-secondary-fixed-variant": "#802a00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .mat-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary selection:text-on-primary overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface-container-low text-[#bb1004] font-inter text-body-md tracking-tight rounded-none w-full top-0 sticky flex justify-between items-center px-8 py-3 w-full border-b-[0.5px] border-stone-200/15 z-50">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold text-[#bb1004] tracking-tighter">PwC Maturity Dashboard</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#bb1004] border-b-2 border-[#bb1004] pb-1" href="#">Executive Summary</a>
+<a class="text-on-surface-variant hover:text-[#bb1004] transition-colors duration-200" href="#">Framework View</a>
+<a class="text-on-surface-variant hover:text-[#bb1004] transition-colors duration-200" href="#">Peer Benchmarking</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-high transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high transition-colors duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="User profile" class="w-8 h-8 object-cover grayscale brightness-110" data-alt="Professional headshot of a corporate executive in a suit, neutral grey background, high-end photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARZa48jBSB0WuJ6TRE6u6jlRgXsucs_mzXC_kgL1mBhVqBvUZMu0NZa5oeH_VYj07JvmNuuKa0_sQEhM_e9gwEatsH_PJXB-a3iXcwwIe3q2DAJhCQexXP27UUvNhR6XiFCgCNDXd5Yck6MP2Kh9gElNjruV0MW8VJoI7QLzsMHo-7LB5axqNmunJg8YJPWx66jAVRtCC3lKOPSMht_8PNxeO8NqRxxghsKZ1LQ8kfV3DP7khGplwempxrNItvO3nfi8u4R1fuAAOT"/>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="flex flex-col w-64 h-full py-6 border-r-[0.5px] border-stone-200/15 bg-surface-container-high rounded-none sticky left-0 z-40">
+<div class="px-6 mb-8">
+<p class="text-lg font-black text-[#bb1004] mb-1">Framework Functions</p>
+<p class="text-on-surface-variant text-label-md font-medium">NIST CSF 2.0</p>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-[#bb1004] bg-surface border-r-4 border-[#bb1004] font-medium transition-all duration-150 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span>Govern</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-stone-200/50 hover:text-primary transition-all duration-150 cursor-pointer">
+<span class="material-symbols-outlined">fingerprint</span>
+<span>Identify</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-stone-200/50 hover:text-primary transition-all duration-150 cursor-pointer">
+<span class="material-symbols-outlined">shield</span>
+<span>Protect</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-stone-200/50 hover:text-primary transition-all duration-150 cursor-pointer">
+<span class="material-symbols-outlined">radar</span>
+<span>Detect</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-stone-200/50 hover:text-primary transition-all duration-150 cursor-pointer">
+<span class="material-symbols-outlined">emergency</span>
+<span>Respond</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-stone-200/50 hover:text-primary transition-all duration-150 cursor-pointer">
+<span class="material-symbols-outlined">settings_backup_restore</span>
+<span>Recover</span>
+</div>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-white font-bold text-sm tracking-wide uppercase shadow-lg active:opacity-80 transition-opacity">
+                    Generate Report
+                </button>
+<div class="mt-4 space-y-1">
+<div class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-stone-200/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">help_outline</span>
+<span class="text-xs">Help Center</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-stone-200/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="text-xs">Log Out</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Dashboard Area -->
+<main class="flex-1 flex flex-col bg-surface overflow-hidden">
+<!-- Breadcrumbs / Secondary Header -->
+<div class="px-8 py-6 flex justify-between items-end border-b-[0.5px] border-stone-200/10">
+<div>
+<h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">Govern (GV)</h1>
+<p class="text-on-surface-variant font-medium">Cybersecurity risk management strategy, expectations, and policy.</p>
+</div>
+<div class="flex gap-4 items-center">
+<div class="flex flex-col items-end">
+<span class="text-label-md text-on-surface-variant uppercase tracking-widest font-bold">Aggregate Score</span>
+<span class="text-2xl font-black text-primary">3.2 / 4.0</span>
+</div>
+<div class="h-10 w-[0.5px] bg-stone-300 mx-2"></div>
+<div class="flex flex-col items-end">
+<span class="text-label-md text-on-surface-variant uppercase tracking-widest font-bold">Status</span>
+<span class="px-3 py-1 bg-[#1E5631] text-white text-xs font-bold uppercase tracking-wider">On Track</span>
+</div>
+</div>
+</div>
+<!-- Dashboard Content -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Center Canvas: Treemap -->
+<div class="flex-1 p-8 overflow-y-auto no-scrollbar">
+<div class="mb-6 flex justify-between items-center">
+<h2 class="text-xl font-bold border-l-4 border-primary pl-4">Function Breakdown</h2>
+<div class="flex items-center gap-6 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-primary-container"></div>
+<span>1.0 (Initial)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-tertiary-fixed"></div>
+<span>2.5 (Managed)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-[#1E5631]"></div>
+<span>4.0 (Adaptive)</span>
+</div>
+</div>
+</div>
+<!-- Treemap Layout -->
+<div class="grid grid-cols-12 grid-rows-6 gap-0.5 h-[600px]">
+<!-- GV.OC: Organizational Context -->
+<div class="col-span-7 row-span-3 bg-[#1E5631] p-6 text-white flex flex-col justify-between hover:brightness-110 transition-all cursor-pointer">
+<div>
+<span class="text-sm font-black opacity-60">GV.OC</span>
+<h3 class="text-2xl font-bold leading-tight mt-1">Organizational Context</h3>
+</div>
+<div class="flex justify-between items-end">
+<p class="text-sm opacity-80 max-w-[240px]">Critical business missions and dependencies are identified and understood.</p>
+<span class="text-4xl font-black italic">4.0</span>
+</div>
+</div>
+<!-- GV.RM: Risk Management Strategy -->
+<div class="col-span-5 row-span-4 bg-tertiary-fixed p-6 text-on-tertiary-fixed flex flex-col justify-between hover:brightness-105 transition-all cursor-pointer">
+<div>
+<span class="text-sm font-black opacity-40">GV.RM</span>
+<h3 class="text-xl font-bold leading-tight mt-1">Risk Management Strategy</h3>
+</div>
+<div class="flex justify-between items-end">
+<p class="text-xs font-medium opacity-70">Priorities, constraints, and risk tolerances are established.</p>
+<span class="text-3xl font-black italic">2.8</span>
+</div>
+</div>
+<!-- GV.RR: Roles and Responsibilities -->
+<div class="col-span-4 row-span-3 bg-tertiary-fixed p-6 text-on-tertiary-fixed flex flex-col justify-between hover:brightness-105 transition-all cursor-pointer">
+<div>
+<span class="text-sm font-black opacity-40">GV.RR</span>
+<h3 class="text-lg font-bold leading-tight mt-1">Roles &amp; Responsibilities</h3>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-2xl font-black italic">3.1</span>
+</div>
+</div>
+<!-- GV.PO: Policy -->
+<div class="col-span-3 row-span-3 bg-primary-container p-6 text-white flex flex-col justify-between hover:brightness-110 transition-all cursor-pointer">
+<div>
+<span class="text-sm font-black opacity-50">GV.PO</span>
+<h3 class="text-lg font-bold leading-tight mt-1">Policy</h3>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-2xl font-black italic">1.4</span>
+</div>
+</div>
+<!-- GV.OV: Oversight -->
+<div class="col-span-5 row-span-2 bg-[#1E5631] p-6 text-white flex flex-col justify-between hover:brightness-110 transition-all cursor-pointer">
+<div>
+<span class="text-sm font-black opacity-60">GV.OV</span>
+<h3 class="text-lg font-bold leading-tight mt-1">Oversight</h3>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-2xl font-black italic">3.8</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Interactive Detail Panel -->
+<aside class="w-[400px] bg-surface-container-low border-l border-stone-200/30 overflow-y-auto no-scrollbar">
+<div class="p-8">
+<div class="mb-8">
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-4 block">Selection Context</span>
+<div class="flex justify-between items-start mb-6">
+<div>
+<h2 class="text-2xl font-black text-on-surface">Organizational Context</h2>
+<p class="text-primary font-bold text-sm tracking-tight mt-1">GV.OC-01 through GV.OC-05</p>
+</div>
+<div class="bg-[#1E5631] text-white p-2">
+<span class="material-symbols-outlined text-lg">verified</span>
+</div>
+</div>
+<div class="flex items-center gap-6 mb-10">
+<div class="text-7xl font-black tracking-tighter text-[#1E5631]">4.0</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface-variant uppercase">Maturity Tier</span>
+<span class="text-xl font-extrabold uppercase tracking-tight text-on-surface">Adaptive</span>
+</div>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-xs font-bold uppercase text-on-surface-variant">Completeness</span>
+<span class="text-xs font-bold">100%</span>
+</div>
+<div class="w-full bg-stone-200 h-1">
+<div class="bg-[#1E5631] h-full w-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-xs font-bold uppercase text-on-surface-variant">Data Confidence</span>
+<span class="text-xs font-bold">High</span>
+</div>
+<div class="w-full bg-stone-200 h-1">
+<div class="bg-[#1E5631] h-full w-[90%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-8">
+<h4 class="text-sm font-black uppercase tracking-widest text-on-surface border-b border-stone-200 pb-2">Category Highlights</h4>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-4 border-l-4 border-[#1E5631]">
+<p class="text-xs font-bold text-[#1E5631] mb-1">GV.OC-01</p>
+<p class="text-sm font-medium text-on-surface leading-snug">The organizational mission is understood and informs cybersecurity risk management.</p>
+</div>
+<div class="bg-surface-container-lowest p-4 border-l-4 border-[#1E5631]">
+<p class="text-xs font-bold text-[#1E5631] mb-1">GV.OC-02</p>
+<p class="text-sm font-medium text-on-surface leading-snug">Stakeholders and their risk management expectations are identified.</p>
+</div>
+<div class="bg-surface p-4 opacity-50">
+<p class="text-xs font-bold text-on-surface-variant mb-1">GV.OC-03</p>
+<p class="text-sm font-medium text-on-surface-variant leading-snug">Legal and regulatory requirements are defined and communicated.</p>
+</div>
+</div>
+<div class="pt-4">
+<button class="w-full py-4 border-2 border-primary text-primary font-bold text-sm hover:bg-primary hover:text-white transition-all uppercase tracking-widest">
+                                    View Evidentiary Documentation
+                                </button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</body></html>
