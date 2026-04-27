@@ -1,31 +1,51 @@
 import { scoreColor, fmtRollup } from '../utils/scoring'
 
-export default function TopNavBar({ overall, functionScores, functions }) {
+const VIEW_TABS = [
+  { id: 'current', label: 'Current State' },
+  { id: 'goal', label: 'Goal Setting' },
+  { id: 'gap', label: 'Gap Analysis & Roadmap' },
+]
+
+export default function TopNavBar({ overall, overallGoal, functionScores, functions, viewMode, onChangeView }) {
   const overallColor = scoreColor(overall)
+  const goalColor = scoreColor(overallGoal ?? overall)
 
   return (
     <header className="top-nav">
       <div className="top-nav__left">
         <span className="top-nav__brand">PwC Maturity Dashboard</span>
         <nav className="top-nav__tabs">
-          <a href="#" className="top-nav__tab top-nav__tab--active">Executive Summary</a>
-          <a href="#" className="top-nav__tab">Framework View</a>
-          <a href="#" className="top-nav__tab">Peer Benchmarking</a>
+          {VIEW_TABS.map(tab => (
+            <button
+              key={tab.id}
+              className={`top-nav__tab${viewMode === tab.id ? ' top-nav__tab--active' : ''}`}
+              onClick={() => onChangeView(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
         </nav>
       </div>
 
       <div className="top-nav__right">
         <div className="top-nav__score-block">
-          <span className="top-nav__score-label">CMMI Maturity Level</span>
+          <span className="top-nav__score-label">CMMI · Current</span>
           <span className="top-nav__score-value" style={{ color: overallColor }}>
             {fmtRollup(overall)}
+            <span className="top-nav__score-denom"> / 5</span>
+          </span>
+        </div>
+        <span className="material-symbols-outlined top-nav__arrow">trending_flat</span>
+        <div className="top-nav__score-block">
+          <span className="top-nav__score-label">CMMI · Goal</span>
+          <span className="top-nav__score-value" style={{ color: goalColor }}>
+            {fmtRollup(overallGoal ?? overall)}
             <span className="top-nav__score-denom"> / 5</span>
           </span>
         </div>
 
         <div className="top-nav__divider" />
 
-        {/* Function score pills */}
         <div className="top-nav__fn-pills">
           {functions.map(fn => {
             const score = functionScores[fn.id] ?? 1
@@ -41,7 +61,6 @@ export default function TopNavBar({ overall, functionScores, functions }) {
 
         <div className="top-nav__divider" />
 
-        {/* Icons */}
         <button className="top-nav__icon-btn" aria-label="Notifications">
           <span className="material-symbols-outlined">notifications</span>
         </button>

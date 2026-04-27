@@ -5,6 +5,7 @@ import TopNavBar from './components/TopNavBar'
 import SideNavBar from './components/SideNavBar'
 import Treemap from './components/Treemap'
 import SelectionContext from './components/SelectionContext'
+import FocusAreas from './components/FocusAreas'
 
 const ALL_SUBCAT_IDS = NIST_CSF.functions.flatMap(fn =>
   fn.categories.flatMap(cat => cat.subcategories.map(s => s.id))
@@ -67,6 +68,16 @@ const DEFAULT_SCORES = {
   'RC.CO-03': 2.4, 'RC.CO-04': 1.9,
 }
 
+// Default goals: every subcategory aims one CMMI level higher (capped at 5),
+// rounded to the nearest 0.5 — a sensible workshop starting point.
+const DEFAULT_GOALS = Object.fromEntries(
+  ALL_SUBCAT_IDS.map(id => {
+    const cur = DEFAULT_SCORES[id] ?? 1
+    const target = Math.min(5, Math.round((cur + 1) * 2) / 2)
+    return [id, target]
+  })
+)
+
 const FN_DESCRIPTIONS = {
   GV: 'Cybersecurity risk management strategy, expectations, and policy.',
   ID: "Understanding the organization's assets, risks, and cybersecurity posture.",
@@ -77,7 +88,7 @@ const FN_DESCRIPTIONS = {
 }
 
 function statusLabel(score) {
-  if (score >= 4.5) return { text: 'Adaptive', color: '#1e5631' }
+  if (score >= 4.5) return { text: 'Optimizing', color: '#1e5631' }
   if (score >= 3.5) return { text: 'On Track', color: '#1e5631' }
   if (score >= 2.0) return { text: 'At Risk', color: '#a83a00' }
   return { text: 'Critical', color: '#e0301e' }
@@ -85,20 +96,29 @@ function statusLabel(score) {
 
 export default function App() {
   const [scores, setScores] = useState(() => ({ ...DEFAULT_SCORES }))
+  const [goalScores, setGoalScores] = useState(() => ({ ...DEFAULT_GOALS }))
+  const [viewMode, setViewMode] = useState('current') // 'current' | 'goal' | 'gap'
   const [selected, setSelected] = useState(null)
   const [selectedFn, setSelectedFn] = useState('GV')
 
-  const { categoryScores, functionScores, overall } = useMemo(
-    () => computeRollups(NIST_CSF, scores),
-    [scores]
-  )
+  const currentRollups = useMemo(() => computeRollups(NIST_CSF, scores), [scores])
+  const goalRollups = useMemo(() => computeRollups(NIST_CSF, goalScores), [goalScores])
+
+  // The "active" rollups drive the side nav & function header. Goal mode shows goal rollups.
+  const activeRollups = viewMode === 'goal' ? goalRollups : currentRollups
 
   function handleScore(subcatId, value) {
-    setScores(prev => ({ ...prev, [subcatId]: value }))
+    if (viewMode === 'goal') {
+      setGoalScores(prev => ({ ...prev, [subcatId]: value }))
+    } else {
+      // In gap and current modes, edits go to current scores.
+      setScores(prev => ({ ...prev, [subcatId]: value }))
+    }
   }
 
-  function handleSelect(subcatId) {
+  function handleSelect(subcatId, optFnId) {
     setSelected(prev => (prev === subcatId ? null : subcatId))
+    if (optFnId && optFnId !== selectedFn) setSelectedFn(optFnId)
   }
 
   function handleSelectFn(fnId) {
@@ -106,32 +126,47 @@ export default function App() {
     setSelected(null)
   }
 
+  function handleChangeView(mode) {
+    setViewMode(mode)
+    setSelected(null)
+  }
+
   const activeFn = NIST_CSF.functions.find(fn => fn.id === selectedFn)
-  const fnScore = functionScores[selectedFn] ?? 1
-  const status = statusLabel(fnScore)
+  const fnScoreCurrent = currentRollups.functionScores[selectedFn] ?? 1
+  const fnScoreGoal = goalRollups.functionScores[selectedFn] ?? fnScoreCurrent
+  const fnScoreActive = viewMode === 'goal' ? fnScoreGoal : fnScoreCurrent
+  const status = statusLabel(fnScoreCurrent)
+
+  // Show focus areas in gap mode; otherwise standard SelectionContext.
+  const showFocusAreas = viewMode === 'gap'
 
   return (
     <div className="app">
       <TopNavBar
-        overall={overall}
-        functionScores={functionScores}
+        overall={currentRollups.overall}
+        overallGoal={goalRollups.overall}
+        functionScores={activeRollups.functionScores}
         functions={NIST_CSF.functions}
+        viewMode={viewMode}
+        onChangeView={handleChangeView}
       />
 
       <div className="app__body">
         <SideNavBar
           functions={NIST_CSF.functions}
-          functionScores={functionScores}
+          functionScores={activeRollups.functionScores}
           selectedFn={selectedFn}
           onSelectFn={handleSelectFn}
         />
 
         <main className="app__main">
-          {/* Function header */}
           <div className="fn-header">
             <div className="fn-header__left">
               <div className="fn-header__title">
                 {activeFn.name.charAt(0) + activeFn.name.slice(1).toLowerCase()} ({activeFn.id})
+                <span className={`fn-header__mode-tag fn-header__mode-tag--${viewMode}`}>
+                  {viewMode === 'goal' ? 'Goal Setting' : viewMode === 'gap' ? 'Gap Analysis' : 'Current State'}
+                </span>
               </div>
               <div className="fn-header__desc">
                 {FN_DESCRIPTIONS[activeFn.id]}
@@ -139,11 +174,29 @@ export default function App() {
             </div>
             <div className="fn-header__right">
               <div className="fn-header__score-block">
-                <span className="fn-header__score-label">Aggregate Score</span>
-                <span className="fn-header__score-value" style={{ color: scoreColor(fnScore) }}>
-                  {fmtRollup(fnScore)} / 5.0
+                <span className="fn-header__score-label">
+                  {viewMode === 'goal' ? 'Goal Score' : 'Current Score'}
+                </span>
+                <span className="fn-header__score-value" style={{ color: scoreColor(fnScoreActive) }}>
+                  {fmtRollup(fnScoreActive)} / 5.0
                 </span>
               </div>
+              {viewMode !== 'current' && (
+                <>
+                  <div className="fn-header__divider" />
+                  <div className="fn-header__score-block">
+                    <span className="fn-header__score-label">
+                      {viewMode === 'goal' ? 'Current Score' : 'Goal Score'}
+                    </span>
+                    <span
+                      className="fn-header__score-value"
+                      style={{ color: scoreColor(viewMode === 'goal' ? fnScoreCurrent : fnScoreGoal) }}
+                    >
+                      {fmtRollup(viewMode === 'goal' ? fnScoreCurrent : fnScoreGoal)} / 5.0
+                    </span>
+                  </div>
+                </>
+              )}
               <div className="fn-header__divider" />
               <div className="fn-header__status-block">
                 <span className="fn-header__status-label">Status</span>
@@ -158,22 +211,37 @@ export default function App() {
             <Treemap
               nistData={NIST_CSF}
               scores={scores}
+              goalScores={goalScores}
               weights={WEIGHTS}
               selected={selected}
               onSelect={handleSelect}
               selectedFnId={selectedFn}
+              viewMode={viewMode}
             />
 
-            {selected && (
+            {showFocusAreas ? (
+              <FocusAreas
+                nistData={NIST_CSF}
+                scores={scores}
+                goalScores={goalScores}
+                weights={WEIGHTS}
+                selected={selected}
+                onSelect={handleSelect}
+                overallCurrent={currentRollups.overall}
+                overallGoal={goalRollups.overall}
+              />
+            ) : selected ? (
               <SelectionContext
                 subcatId={selected}
                 nistData={NIST_CSF}
                 scores={scores}
-                categoryScores={categoryScores}
+                goalScores={goalScores}
+                categoryScores={activeRollups.categoryScores}
                 weights={WEIGHTS}
                 onScore={handleScore}
+                viewMode={viewMode}
               />
-            )}
+            ) : null}
           </div>
         </main>
       </div>
