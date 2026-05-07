@@ -6,6 +6,7 @@ import WorkshopOverview from './WorkshopOverview'
 import WorkshopTreemap from './WorkshopTreemap'
 import WorkshopDetail from './WorkshopDetail'
 import WorkshopFocus from './WorkshopFocus'
+import HelpTip from './HelpTip'
 
 const ALL_SUBCAT_IDS = NIST_CSF.functions.flatMap(fn =>
   fn.categories.flatMap(cat => cat.subcategories.map(s => s.id))
@@ -53,10 +54,22 @@ const DEFAULT_GOALS = Object.fromEntries(
 )
 
 const TABS = [
-  { id: 'overview',  label: 'Overview',         icon: 'dashboard' },
-  { id: 'current',   label: 'Current State',    icon: 'monitoring' },
-  { id: 'goals',     label: 'Set Goals',        icon: 'flag' },
-  { id: 'roadmap',   label: 'Roadmap',          icon: 'route' },
+  {
+    id: 'overview', label: 'Overview', icon: 'dashboard',
+    help: 'A 60-second snapshot of where the organization stands today, the biggest gaps, and three places to take the workshop next.',
+  },
+  {
+    id: 'current', label: 'Current State', icon: 'monitoring',
+    help: 'Walk the room through every CSF subcategory and capture today\'s maturity. Click a tile to pin it, then drag the slider to score live.',
+  },
+  {
+    id: 'goals', label: 'Set Goals', icon: 'flag',
+    help: 'Decide where the organization wants to be in 12–18 months. Adjusting goals here updates the heatmap so you can show targeted state.',
+  },
+  {
+    id: 'roadmap', label: 'Roadmap', icon: 'route',
+    help: 'Heatmap colors switch to "gap" mode (green = met, red = wide gap). Use the simulator on the right to model "what if we fix X?" — the hero updates live.',
+  },
 ]
 
 export default function WorkshopApp() {
@@ -121,14 +134,16 @@ export default function WorkshopApp() {
         </div>
         <nav className="ws-topnav__tabs">
           {TABS.map(t => (
-            <button
-              key={t.id}
-              className={`ws-tab${tab === t.id ? ' ws-tab--active' : ''}`}
-              onClick={() => setTab(t.id)}
-            >
-              <span className="material-symbols-outlined">{t.icon}</span>
-              <span>{t.label}</span>
-            </button>
+            <div key={t.id} className="ws-tab-wrap">
+              <button
+                className={`ws-tab${tab === t.id ? ' ws-tab--active' : ''}`}
+                onClick={() => setTab(t.id)}
+              >
+                <span className="material-symbols-outlined">{t.icon}</span>
+                <span>{t.label}</span>
+              </button>
+              <HelpTip title={t.label} text={t.help} placement="bottom" />
+            </div>
           ))}
         </nav>
       </header>

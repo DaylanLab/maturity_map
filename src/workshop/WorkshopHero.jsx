@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { scoreColor, gapColor, fmtRollup } from '../utils/scoring'
+import HelpTip from './HelpTip'
+
+const TIPS = {
+  current:   { title: 'Current Maturity', text: 'Weighted average of every subcategory score across all six CSF functions, on the CMMI 1–5 scale. Each function counts equally; categories within a function count equally; subcategories within a category count equally.' },
+  goal:      { title: 'Goal Maturity',    text: 'Same calculation as current, but using your target scores. This is where the organization wants to be at the end of the planning horizon.' },
+  simulated: { title: 'Simulated',        text: 'Projected overall maturity if the fixes you\'ve applied in the Roadmap tab were completed. Shows the lift you can promise the room.' },
+  gap:       { title: 'Gap to close',     text: 'Goal minus current, on the 1–5 scale. The bigger this is, the more transformation work is ahead.' },
+  status:    { title: 'Workshop status',  text: 'A one-glance read of where you stand: ≥4.5 Optimizing, ≥3.5 On Track, ≥2.0 At Risk, below 2.0 Critical.' },
+}
 
 function status(score) {
   if (score >= 4.5) return { text: 'Optimizing', tone: 'good' }
@@ -18,15 +27,16 @@ export default function WorkshopHero({ current, goal, simulated, tab }) {
   return (
     <div className="ws-hero">
       <div className="ws-hero__main">
-        <ScoreBlock label="Current Maturity" value={current} color={scoreColor(current)} />
+        <ScoreBlock label="Current Maturity" tip={TIPS.current} value={current} color={scoreColor(current)} />
         <span className="material-symbols-outlined ws-hero__arrow">trending_flat</span>
-        <ScoreBlock label="Goal Maturity" value={goal} color={scoreColor(goal)} />
+        <ScoreBlock label="Goal Maturity" tip={TIPS.goal} value={goal} color={scoreColor(goal)} />
 
         {simulated != null && (
           <>
             <span className="ws-hero__div" />
             <ScoreBlock
               label="Simulated"
+              tip={TIPS.simulated}
               value={simulated}
               color={scoreColor(simulated)}
               accent
@@ -38,22 +48,29 @@ export default function WorkshopHero({ current, goal, simulated, tab }) {
 
       <div className="ws-hero__meta">
         <div className="ws-hero__gap">
-          <span className="ws-hero__gap-label">Gap to close</span>
+          <span className="ws-hero__gap-label">
+            Gap to close
+            <HelpTip title={TIPS.gap.title} text={TIPS.gap.text} placement="left" size={12} />
+          </span>
           <span className="ws-hero__gap-val" style={{ color: gapColor(current, goal) }}>{gap.toFixed(2)}</span>
         </div>
-        <div className={`ws-hero__status ws-hero__status--${stat.tone}`}>
+        <div className={`ws-hero__status ws-hero__status--${stat.tone}`} title={`${TIPS.status.title}: ${TIPS.status.text}`}>
           {stat.text}
+          <HelpTip title={TIPS.status.title} text={TIPS.status.text} placement="left" size={12} />
         </div>
       </div>
     </div>
   )
 }
 
-function ScoreBlock({ label, value, color, accent, delta }) {
+function ScoreBlock({ label, tip, value, color, accent, delta }) {
   const animatedValue = useTween(value)
   return (
     <div className={`ws-score-block${accent ? ' ws-score-block--accent' : ''}`}>
-      <div className="ws-score-block__label">{label}</div>
+      <div className="ws-score-block__label">
+        {label}
+        {tip && <HelpTip title={tip.title} text={tip.text} placement="bottom" size={12} />}
+      </div>
       <div className="ws-score-block__row">
         <div className="ws-score-block__val" style={{ color }}>
           {fmtRollup(animatedValue)}
