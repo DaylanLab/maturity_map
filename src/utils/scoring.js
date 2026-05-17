@@ -1,8 +1,18 @@
-// Heat map: red (1.0) → gold (3.0) → deep green (5.0)
+// Heat map calibrated for the typical CMMI cyber population, which clusters
+// in the 2.0–3.0 band. The midpoint (gold/neutral) is pulled down to 2.5 so:
+//   • 2.0 reads orange — "noticeable gap" rather than "alarmingly red"
+//   • 2.5 reads gold — "typical / acceptable"
+//   • 3.0 reads yellow-green — "good, climbing"
+//   • 4.0+ reads green — "leading"
+// This gives the workshop a wider palette of meaningful color where real
+// clients actually live, instead of compressing them all into "orange".
 const SCORE_COLORS = [
-  { score: 1.0, color: '#e0301e' },
-  { score: 3.0, color: '#ffb600' },
-  { score: 5.0, color: '#1e5631' },
+  { score: 1.0, color: '#c8281a' }, // deep red — critical
+  { score: 2.0, color: '#e87a1a' }, // orange — gap
+  { score: 2.5, color: '#f0b400' }, // gold — typical midpoint
+  { score: 3.0, color: '#c8c000' }, // yellow-green — acceptable
+  { score: 4.0, color: '#6aa64a' }, // green — strong
+  { score: 5.0, color: '#1e5631' }, // deep green — optimizing
 ]
 
 export function scoreColor(score) {
