@@ -1,0 +1,88 @@
+Business Requirements for Financial Power BI Dashboard
+
+1. Overview:
+Develop a financial Power BI dashboard to track and analyze Fiscal Year spend for the previous and current fiscal years. The dashboard will provide insights into the spending patterns of six directors, each associated with a specific cyber pillar. The key features of the dashboard will include current and prior forecasts, variances by cost centers, Opex and Capex variances by director/pillar, and identification of speed up and slow down opportunities within the cyber domain. Additionally, the dashboard will facilitate comparison forecasts with AGP, C1, and C2, along with various comparison periods such as FY, Past Month, Current Month, Next Month, Past Quarter, Current Quarter, and Next Quarter.
+
+2. Director and Pillar Mapping:
+- Associate each director with their respective cyber pillar:
+  - Director 1: IAM (Identity and Access Management)
+  - Director 2: TCG (Threat and Cybersecurity Governance)
+  - Director 3: NSS/CSS (Network Security Services/Cybersecurity Services)
+  - Director 4: VTIM (Vulnerability and Threat Intelligence Management)
+  - Director 5: SITRM (Security Incident and Threat Response Management)
+  - Director 6: OT (Operational Technology)
+
+3. Forecast Tracking:
+- Display current and prior forecasts:
+  - Current Forecast: Financial projection for the current fiscal year.
+  - Prior Forecast: Financial projection for the previous fiscal year.
+
+4. Variance Analysis:
+- Provide variances by cost centers:
+  - Analyze the differences between actual spend and forecasted spend for each cost center.
+
+5. Opex and Capex Variance:
+- Present variances at the director/pillar level:
+  - Identify and compare the variances between Operational Expenditure (Opex) and Capital Expenditure (Capex) for each director/pillar.
+
+6. Speed Up and Slow Down Opportunities:
+- Highlight opportunities within the cyber domain to speed up or slow down spending:
+  - Identify areas where expenses can be accelerated or decelerated to optimize financial performance.
+
+7. Comparison Forecasts [Drop Down Selection]:
+- Enable comparison forecasts with AGP, C1, and C2:
+  - AGP (Annual Growth Plan): Compare the current financial forecast against the annual growth plan.
+  - C1 (Current Month): Compare the current financial forecast against the spending in the current month.
+  - C2 (Next Month): Compare the current financial forecast against the projected spending in the next month.
+
+8. Comparison Periods [Drop Down Selection]:
+- Support various comparison periods:
+  - FY (Fiscal Year): Analyze the financial forecast for the entire fiscal year.
+  - Past Month: Compare the financial forecast with the spendings of the previous month.
+  - Current Month: Compare the financial forecast with the spendings in the current month.
+  - Next Month: Compare the financial forecast with the projected spendings in the next month.
+  - Past Quarter: Compare the financial forecast with the spendings of the previous quarter.
+  - Current Quarter: Compare the financial forecast with the spendings in the current quarter.
+  - Next Quarter: Compare the financial forecast with the projected spendings in the next quarter.
+
+Note: These requirements serve as a starting point for the development of the financial Power BI dashboard.
+
+
+===========================================================
+DASHBOARD MOCKUP LAYOUT (from screenshot)
+===========================================================
+
+TOP HALF — INITIATIVE SECTION
+-----------------------------
+Header row (3 KPI cards):
+  - Current Forecast (Initiative): OPEX $XX,XXX,XXX.XX | CAPEX $XX,XXX,XXX.XX
+  - Prior Forecast (Initiative):   OPEX $XX,XXX,XXX.XX | CAPEX $XX,XXX,XXX.XX
+  - Variance (Initiative):         OPEX $(XXX,XXX.XX)  | CAPEX $XXX,XXX.XX
+
+Body (3 panels):
+  - OPEX by DIRECTOR  (horizontal bar chart: Bala, Gourg, Jon, Melody, Ronney, Wayman)
+      Legend: Current Forecast / Prior Forecast
+  - CAPEX by DIRECTOR (horizontal bar chart: same six directors)
+      Legend: Current Forecast / Prior Forecast
+  - OVERALL FORECASTED SPEND by VENDOR (pie chart)
+      Side card: TOP VENDOR = Vendor A
+      Side card: SPEND beneath 33% = $0
+
+BOTTOM HALF — BAU (Business As Usual) SECTION
+---------------------------------------------
+Header row (3 KPI cards):
+  - Current Forecast (BAU): OPEX | CAPEX
+  - Prior Forecast (BAU):   OPEX | CAPEX
+  - Variance (BAU):         OPEX | CAPEX
+
+Body (3 panels):
+  - OPEX by DIRECTOR (BAU)  - bar chart, six directors
+  - CAPEX by DIRECTOR (BAU) - bar chart, six directors
+  - IDEAS to SPEED / SLOW SPEND (ranked list):
+      1. SOC 2.0          - Gourg  - $400,000 - Opex
+      2. Cyber Risk Mgmt  - Bala   - $300,000 - Opex
+      3. GitHub Monitoring- Melody - $200,000 - Opex
+
+GLOBAL FILTERS (bottom-right):
+  - Comparison Forecast (dropdown: AGP / C1 / C2)
+  - Comparison Period   (dropdown: FY / Past Month / Current Month / Next Month / Past Quarter / Current Quarter / Next Quarter)

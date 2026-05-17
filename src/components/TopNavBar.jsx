@@ -29,20 +29,28 @@ export default function TopNavBar({ overall, overallGoal, functionScores, functi
 
       <div className="top-nav__right">
         <div className="top-nav__score-block">
-          <span className="top-nav__score-label">CMMI · Current</span>
+          <span className="top-nav__score-label">
+            {viewMode === 'goal' ? 'CMMI · Current' : 'CMMI Maturity'}
+          </span>
           <span className="top-nav__score-value" style={{ color: overallColor }}>
             {fmtRollup(overall)}
             <span className="top-nav__score-denom"> / 5</span>
           </span>
         </div>
-        <span className="material-symbols-outlined top-nav__arrow">trending_flat</span>
-        <div className="top-nav__score-block">
-          <span className="top-nav__score-label">CMMI · Goal</span>
-          <span className="top-nav__score-value" style={{ color: goalColor }}>
-            {fmtRollup(overallGoal ?? overall)}
-            <span className="top-nav__score-denom"> / 5</span>
-          </span>
-        </div>
+        {/* Goal score only appears once the user is actively setting goals,
+            so the default landing view stays focused on the current state. */}
+        {viewMode === 'goal' && (
+          <>
+            <span className="material-symbols-outlined top-nav__arrow">trending_flat</span>
+            <div className="top-nav__score-block">
+              <span className="top-nav__score-label">CMMI · Goal</span>
+              <span className="top-nav__score-value" style={{ color: goalColor }}>
+                {fmtRollup(overallGoal ?? overall)}
+                <span className="top-nav__score-denom"> / 5</span>
+              </span>
+            </div>
+          </>
+        )}
 
         <div className="top-nav__divider" />
 

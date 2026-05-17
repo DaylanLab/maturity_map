@@ -207,17 +207,22 @@ export default function App() {
             </div>
           </div>
 
-          <div className="app__canvas">
-            <Treemap
-              nistData={NIST_CSF}
-              scores={scores}
-              goalScores={goalScores}
-              weights={WEIGHTS}
-              selected={selected}
-              onSelect={handleSelect}
-              selectedFnId={selectedFn}
-              viewMode={viewMode}
-            />
+          <div className={`app__canvas${showFocusAreas ? ' app__canvas--focus-only' : ''}`}>
+            {/* Gap Analysis & Roadmap is a pure prioritized-card view —
+                the heatmap on the other tabs already shows where things stand,
+                so we don't re-render it here. FocusAreas takes the full width. */}
+            {!showFocusAreas && (
+              <Treemap
+                nistData={NIST_CSF}
+                scores={scores}
+                goalScores={goalScores}
+                weights={WEIGHTS}
+                selected={selected}
+                onSelect={handleSelect}
+                selectedFnId={selectedFn}
+                viewMode={viewMode}
+              />
+            )}
 
             {showFocusAreas ? (
               <FocusAreas
