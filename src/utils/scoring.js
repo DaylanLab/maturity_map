@@ -8,10 +8,10 @@
 // clients actually live, instead of compressing them all into "orange".
 const SCORE_COLORS = [
   { score: 1.0, color: '#c8281a' }, // deep red — critical
-  { score: 2.0, color: '#e87a1a' }, // orange — gap
-  { score: 2.5, color: '#f0b400' }, // gold — typical midpoint
-  { score: 3.0, color: '#c8c000' }, // yellow-green — acceptable
-  { score: 4.0, color: '#6aa64a' }, // green — strong
+  { score: 1.5, color: '#e87a1a' }, // orange — early gap
+  { score: 2.0, color: '#8fbf3f' }, // light green — green territory begins here
+  { score: 3.0, color: '#4f9a3a' }, // medium green — solid
+  { score: 4.0, color: '#2e7a35' }, // strong green — leading
   { score: 5.0, color: '#1e5631' }, // deep green — optimizing
 ]
 
