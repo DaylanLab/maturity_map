@@ -100,11 +100,14 @@ const FN_DESCRIPTIONS = {
   RC: 'Plans for resilience and restoration of capabilities or services.',
 }
 
+// No "Critical" tier — even early-stage clients deserve language that
+// frames the work ahead, not a doom-y label. The lower tiers use positive
+// progress framing instead.
 function statusLabel(score) {
   if (score >= 4.5) return { text: 'Optimizing', color: '#1e5631' }
-  if (score >= 3.5) return { text: 'On Track', color: '#1e5631' }
-  if (score >= 2.0) return { text: 'At Risk', color: '#a83a00' }
-  return { text: 'Critical', color: '#e0301e' }
+  if (score >= 3.5) return { text: 'On Track',   color: '#2e7a35' }
+  if (score >= 2.5) return { text: 'Progressing', color: '#5a9a3e' }
+  return                     { text: 'Foundational', color: '#a07a14' }
 }
 
 export default function App() {

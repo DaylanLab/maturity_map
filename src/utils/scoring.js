@@ -6,12 +6,16 @@
 //   • 4.0+ reads green — "leading"
 // This gives the workshop a wider palette of meaningful color where real
 // clients actually live, instead of compressing them all into "orange".
+// Designed so a mid-2 client reads as "working toward good, not there yet"
+// (a confident amber, not red, not green). Red only at the 1.0 floor —
+// real clients rarely sit there, so red on the map is genuinely meaningful.
 const SCORE_COLORS = [
-  { score: 1.0, color: '#c8281a' }, // deep red — critical
-  { score: 1.5, color: '#e87a1a' }, // orange — early gap
-  { score: 2.0, color: '#cce69a' }, // pale lime — first hint of green
-  { score: 3.0, color: '#7fb663' }, // medium green — solid
-  { score: 4.0, color: '#4a8c3e' }, // strong green — leading
+  { score: 1.0, color: '#c8281a' }, // red — only the floor
+  { score: 1.5, color: '#e08a2a' }, // orange-amber — climbing out
+  { score: 2.0, color: '#e8b53a' }, // amber/gold — in progress
+  { score: 2.5, color: '#a6c14a' }, // yellow-green — visibly improving
+  { score: 3.0, color: '#5a9a3e' }, // medium green — solid
+  { score: 4.0, color: '#2e7a35' }, // strong green — leading
   { score: 5.0, color: '#1e5631' }, // deep green — optimizing
 ]
 
