@@ -9,9 +9,9 @@
 const SCORE_COLORS = [
   { score: 1.0, color: '#c8281a' }, // deep red — critical
   { score: 1.5, color: '#e87a1a' }, // orange — early gap
-  { score: 2.0, color: '#8fbf3f' }, // light green — green territory begins here
-  { score: 3.0, color: '#4f9a3a' }, // medium green — solid
-  { score: 4.0, color: '#2e7a35' }, // strong green — leading
+  { score: 2.0, color: '#cce69a' }, // pale lime — first hint of green
+  { score: 3.0, color: '#7fb663' }, // medium green — solid
+  { score: 4.0, color: '#4a8c3e' }, // strong green — leading
   { score: 5.0, color: '#1e5631' }, // deep green — optimizing
 ]
 
