@@ -13,7 +13,12 @@ const ALL_SUBCAT_IDS = NIST_CSF.functions.flatMap(fn =>
 
 const WEIGHTS = computeWeights(NIST_CSF)
 
-const DEFAULT_SCORES = {
+// Global shift applied to the baseline scores below. Real client baselines
+// tend to land lower than our raw seed values suggested, so we pull the whole
+// distribution down ~0.6 (clamped at 1.0). Tweak this single constant to
+// rebaseline the whole demo without touching individual values.
+const BASELINE_SHIFT = -0.6
+const RAW_DEFAULT_SCORES = {
   // GV.OC — Organizational Context
   'GV.OC-01': 3.2, 'GV.OC-02': 2.8, 'GV.OC-03': 3.5, 'GV.OC-04': 2.4, 'GV.OC-05': 2.6,
   // GV.RM — Risk Management Strategy
@@ -67,6 +72,14 @@ const DEFAULT_SCORES = {
   // RC.CO — Incident Recovery Communication
   'RC.CO-03': 2.4, 'RC.CO-04': 1.9,
 }
+
+// Apply the shift; round to 1 decimal; clamp to the valid 1.0–5.0 range.
+const DEFAULT_SCORES = Object.fromEntries(
+  Object.entries(RAW_DEFAULT_SCORES).map(([id, v]) => [
+    id,
+    Math.max(1, Math.min(5, Math.round((v + BASELINE_SHIFT) * 10) / 10)),
+  ])
+)
 
 // Default goals: every subcategory aims one CMMI level higher (capped at 5),
 // rounded to the nearest 0.5 — a sensible workshop starting point.
